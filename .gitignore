@@ -1,0 +1,10 @@
+#Ignore the file extensions
+*.avi
+*.pt
+*.mp4
+*.pyc
+
+# Ignore all files inside these directories
+adfoot*
+utils\__pycache__*
+

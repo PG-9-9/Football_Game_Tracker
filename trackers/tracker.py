@@ -26,7 +26,7 @@ class Tracker:
 
         return detections
 
-    def get_object_track(self, frames,read_from_stub=False, stub_path=None):
+    def get_object_tracks(self, frames,read_from_stub=False, stub_path=None):
 
 
         if read_from_stub and stub_path is not None and os.path.exists(stub_path):
@@ -170,7 +170,8 @@ class Tracker:
 
             # Draw the ellipse for the players
             for track_id, player in player_dict.items():
-                frame = self.draw_ellipse(frame, player["bbox"], (0, 0, 255),track_id)
+                color=player.get("team_color", (0,0,255)) # Default color is red
+                frame = self.draw_ellipse(frame, player["bbox"], color ,track_id)
 
             # Draw the ellipse for the referees
             for _, referee in refree_dict.items(): #No need to track id the referees

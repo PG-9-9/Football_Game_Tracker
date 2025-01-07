@@ -6,6 +6,7 @@ import sys
 sys.path.append('../') # Add the parent directory to the path to import the bbox utils
 from utils import get_center_of_bbox, get_bbox_width
 import cv2
+import numpy as np
 
 
 class Tracker:
@@ -134,6 +135,30 @@ class Tracker:
 
         return frame
     
+    def draw_traingle(self,frame,bbox,color):
+        y=int(bbox[1]) # Top y, because we need to draw the triangle at the top of the bbox
+        x,_=get_center_of_bbox(bbox)
+
+        triangle_points=np.array([ # Inverted Triangle
+            [x,y], # Peak(Bottom) of the triangle (Inverted), so it will be downwards
+            [x-10,y+20], # Top left
+            [x+10,y+20] # Top right
+        ])
+        # Draw the triangle
+        cv2.drawContours(frame,
+                        [triangle_points],
+                        0, # Index of the contour to draw
+                        color, # Color of the contour
+                        cv2.FILLED)#-1 to fill the contour
+        # Draw the traingle border
+        cv2.drawContours(frame,
+                        [triangle_points],
+                        0, # Index of the contour to draw
+                        (0,0,0), # Color of the contour
+                        2)#2 for the thickness of the contour
+
+        return frame
+
 
     def draw_annotations(self, video_frames, tracks):
         output_video_frames=[]
@@ -151,6 +176,10 @@ class Tracker:
             for _, referee in refree_dict.items(): #No need to track id the referees
                 frame = self.draw_ellipse(frame, referee["bbox"], (0, 255, 255),)
 
+            # Draw the triangle for the ball
+            for track_id, ball in ball_dict.items():
+                frame = self.draw_traingle(frame, ball["bbox"], (0, 255, 0))
+            
             output_video_frames.append(frame)
         
         return output_video_frames

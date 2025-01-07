@@ -154,8 +154,8 @@ class Tracker:
 
         triangle_points=np.array([ # Inverted Triangle
             [x,y], # Peak(Bottom) of the triangle (Inverted), so it will be downwards
-            [x-10,y+20], # Top left
-            [x+10,y+20] # Top right
+            [x-10,y-20], # Top left
+            [x+10,y-20] # Top right
         ])
         # Draw the triangle
         cv2.drawContours(frame,
@@ -184,6 +184,9 @@ class Tracker:
             for track_id, player in player_dict.items():
                 color=player.get("team_color", (0,0,255)) # Default color is red
                 frame = self.draw_ellipse(frame, player["bbox"], color ,track_id)
+
+                if player.get("has_ball", False):# If the player has the ball
+                    frame = self.draw_traingle(frame, player["bbox"], (0, 0, 255))
 
             # Draw the ellipse for the referees
             for _, referee in refree_dict.items(): #No need to track id the referees

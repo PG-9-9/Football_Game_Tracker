@@ -12,6 +12,7 @@ class CameraMovementEstimator():
 
         self.minimum_distance= 5 # Minimum distance to consider a point as a feature
 
+        # Parameters for the Lucas-Kanade optical flow
         self.lk_params=dict(
             winSize=(15,15), # Size of the search window at each pyramid level
             maxLevel=2, # 0-based maximal pyramid level number; if set to 0, pyramids are not used (single level), if set to 1, two levels are used, and so on

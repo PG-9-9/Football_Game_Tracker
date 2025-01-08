@@ -6,9 +6,19 @@ from player_ball_assigner import PlayerBallAssigner
 import numpy as np
 from camera_movement_estimator import CameraMovementEstimator
 from view_transformer import ViewTransformer
+from speed_and_distance_estimator import SpeedAndDistanceEstimator
 
 
 def main():
+    """
+    Main function to process a video and perform the following tasks:
+    - Object tracking
+    - Camera movement estimation
+    - View transformation
+    - Speed and distance calculation
+    - Team and ball assignments
+    - Output annotation and saving
+    """
     #Read the video
     video_frames=read_video('input_videos/08fd33_4.mp4')
     
@@ -35,6 +45,10 @@ def main():
     
     # Interpolate ball positions
     tracks['ball']=tracker.interpolate_ball_positions(tracks['ball'])
+
+    # Speed and Distance Estimator
+    speed_and_distance_estimator=SpeedAndDistanceEstimator()
+    speed_and_distance_estimator.add_speed_and_distance_to_tracks(tracks)
     
     # Assign the Player Teams
     team_assigner=TeamAssigner()
@@ -70,6 +84,9 @@ def main():
     # Draw the camera movement
     output_video_frames=camera_movement_estimator.draw_camera_movement(output_video_frames, camera_movement_per_frame)
 
+    # Draw the speed and distance
+    speed_and_distance_estimator.draw_speed_and_distance(output_video_frames, tracks)
+    
     # Save the video
     save_video(output_video_frames, 'output_videos/output_video.avi')
 

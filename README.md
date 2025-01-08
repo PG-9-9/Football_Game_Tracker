@@ -31,6 +31,32 @@ The annotated video includes:
 
 ---
 
+## Visualization of the Output
+
+![Annotated Sports Video Frame](./image.png)
+
+The above image is a frame from the annotated output video. It demonstrates the application of various algorithms used in this project:
+
+1. **Player and Ball Detection**:
+   - Players and the ball are detected using the YOLO object detection algorithm.
+   - Each player is assigned a unique ID, which is consistent across frames due to the ByteTrack tracking algorithm.
+
+2. **Bounding Ellipses and Triangles**:
+   - Players are highlighted with white bounding ellipses.
+   - The ball is marked with a green inverted triangle to make it easily identifiable.
+
+3. **Player Speed and Distance**:
+   - The speed (in km/h) and total distance covered (in meters) are displayed for each player. These metrics are calculated using the transformed positions in metric space, leveraging homography transformation and speed estimation algorithms.
+
+4. **Camera Movement**:
+   - The camera’s horizontal (X) and vertical (Y) movements are estimated using Lucas-Kanade Optical Flow and displayed at the top left.
+
+5. **Team Ball Control**:
+   - The ball possession percentage for each team is displayed at the bottom right. This is determined based on proximity to the ball and team assignment via KMeans clustering of player colors.
+
+The visualization provides real-time analytics and insights into the gameplay, combining multiple algorithms to create a comprehensive and engaging output.
+
+
 ## Features
 
 1. **Object Detection**: Uses YOLO (You Only Look Once) for detecting players, referees, and the ball in each frame.
